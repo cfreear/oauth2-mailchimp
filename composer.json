@@ -29,5 +29,10 @@
         "mockery/mockery": "~0.9",
         "squizlabs/php_codesniffer": "~2.0",
         "scrutinizer/ocular": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "CFreear\\OAuth2\\Client\\": "src/"
+        }
     }
 }
