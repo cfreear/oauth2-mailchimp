@@ -10,16 +10,26 @@ class MailChimpResourceOwner implements ResourceOwnerInterface
      * Raw response
      * @var
      */
-    private $response;
+    protected $response;
 
     /**
-     * Returns the identifier of the authorized resource owner.
+     * Set response
      *
-     * @return mixed
+     * @param array $response
+     */
+    public function __construct(array $response)
+    {
+        $this->response = $response;
+    }
+
+    /**
+     * Returns empty id as MailChimp doesn't respond with an identifier.
+     *
+     * @return string
      */
     public function getId()
     {
-        // TODO: Implement getId() method.
+        return '';
     }
 
     /**
@@ -29,6 +39,36 @@ class MailChimpResourceOwner implements ResourceOwnerInterface
      */
     public function toArray()
     {
-        return [];
+        return $this->response;
+    }
+
+    /**
+     * Get the data center identifier.
+     *
+     * @return array
+     */
+    public function getDC()
+    {
+        return $this->response['dc'];
+    }
+
+    /**
+     * Get the api endpoint.
+     *
+     * @return array
+     */
+    public function getAPIEndpoint()
+    {
+        return $this->response['api_endpoint'];
+    }
+
+    /**
+     * Get the login url.
+     *
+     * @return array
+     */
+    public function getLoginURL()
+    {
+        return $this->response['login_url'];
     }
 }
