@@ -67,7 +67,11 @@ class MailChimp extends AbstractProvider
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
-        // TODO: Implement checkResponse() method.
+        if (!empty($data[$this->responseError])) {
+            $error = $data[$this->responseError];
+            $code  = $this->responseCode ? $data[$this->responseCode] : 0;
+            throw new IdentityProviderException($error, $code, $data);
+        }
     }
 
     /**
