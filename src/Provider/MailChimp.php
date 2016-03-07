@@ -71,7 +71,7 @@ class MailChimp extends AbstractProvider
             throw new IdentityProviderException(
                 $data['error'] ?: $response->getReasonPhrase(),
                 $response->getStatusCode(),
-                $response
+                $response->getBody()
             );
         }
     }
