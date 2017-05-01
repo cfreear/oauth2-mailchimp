@@ -23,13 +23,11 @@ class MailChimpResourceOwner implements ResourceOwnerInterface
     }
 
     /**
-     * Returns empty id as MailChimp doesn't respond with an identifier.
-     *
      * @return string
      */
     public function getId()
     {
-        return '';
+        return $this->response['user_id'];
     }
 
     /**
