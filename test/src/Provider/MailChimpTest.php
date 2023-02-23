@@ -5,10 +5,12 @@ namespace CFreear\OAuth2\Client\Test\Provider;
 use CFreear\OAuth2\Client\Provider\MailChimp;
 use CFreear\OAuth2\Client\Provider\MailChimpResourceOwner;
 use League\OAuth2\Client\Provider\AbstractProvider;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Mockery as m;
 use ReflectionClass;
+use PHPUnit\Framework\TestCase;
 
-class MailChimpTest extends \PHPUnit_Framework_TestCase
+class MailChimpTest extends TestCase
 {
     /**
      * @var $provider AbstractProvider
@@ -23,7 +25,7 @@ class MailChimpTest extends \PHPUnit_Framework_TestCase
         return $method;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = new MailChimp([
             'clientId'     => 'test_client_id',
@@ -32,7 +34,7 @@ class MailChimpTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
         parent::tearDown();
@@ -85,9 +87,6 @@ class MailChimpTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($token->getResourceOwnerId());
     }
 
-    /**
-     * @expectedException League\OAuth2\Client\Provider\Exception\IdentityProviderException
-     */
     public function testExceptionThrownWhenErrorObjectReceived()
     {
         $message = uniqid();
@@ -101,6 +100,7 @@ class MailChimpTest extends \PHPUnit_Framework_TestCase
             ->times(1)
             ->andReturn($postResponse);
         $this->provider->setHttpClient($client);
+        $this->expectException(IdentityProviderException::class);
         $this->provider->getAccessToken('authorization_code',
             ['code' => 'test_authorization_code']);
     }
