@@ -14,13 +14,23 @@ class MailChimp extends AbstractProvider
     use BearerAuthorizationTrait;
 
     /**
+     * MailChimp base auth domain
+     */
+    public $authDomain = 'https://login.mailchimp.com';
+
+    /**
+     * MailChimp oauth base url
+     */
+    public $oAuthUrl = '/oauth2';
+
+    /**
      * Returns the base URL for authorizing a client.
      *
      * @return string
      */
-    public function getBaseAuthorizationUrl()
+    public function getBaseAuthorizationUrl(): string
     {
-        return 'https://login.mailchimp.com/oauth2/authorize';
+        return $this->authDomain.$this->oAuthUrl.'/authorize';
     }
 
     /**
@@ -29,9 +39,9 @@ class MailChimp extends AbstractProvider
      * @param array $params
      * @return string
      */
-    public function getBaseAccessTokenUrl(array $params)
+    public function getBaseAccessTokenUrl(array $params): string
     {
-        return 'https://login.mailchimp.com/oauth2/token';
+        return $this->authDomain.$this->oAuthUrl.'/token';
     }
 
     /**
@@ -40,9 +50,9 @@ class MailChimp extends AbstractProvider
      * @param AccessToken $token
      * @return string
      */
-    public function getResourceOwnerDetailsUrl(AccessToken $token)
+    public function getResourceOwnerDetailsUrl(AccessToken $token):string
     {
-        return 'https://login.mailchimp.com/oauth2/metadata';
+        return $this->authDomain.$this->oAuthUrl.'/metadata';
     }
 
     /**
@@ -52,7 +62,7 @@ class MailChimp extends AbstractProvider
      *
      * @return array
      */
-    protected function getDefaultScopes()
+    protected function getDefaultScopes(): array
     {
         return [];
     }
@@ -65,7 +75,7 @@ class MailChimp extends AbstractProvider
      * @param  array|string $data Parsed response data
      * @return void
      */
-    protected function checkResponse(ResponseInterface $response, $data)
+    protected function checkResponse(ResponseInterface $response, $data): void
     {
         if ($response->getStatusCode() >= 400) {
             throw new IdentityProviderException(
@@ -82,9 +92,9 @@ class MailChimp extends AbstractProvider
      *
      * @param  array $response
      * @param  AccessToken $token
-     * @return ResourceOwnerInterface
+     * @return MailChimpResourceOwner
      */
-    protected function createResourceOwner(array $response, AccessToken $token)
+    protected function createResourceOwner(array $response, AccessToken $token): MailChimpResourceOwner
     {
         return new MailChimpResourceOwner($response);
     }
